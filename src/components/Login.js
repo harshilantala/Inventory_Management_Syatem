@@ -1,15 +1,35 @@
-import React, { useState } from 'react';
+/* eslint-disable no-undef */
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+import { Link } from 'react-router-dom';
 
 const LoginForm = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [rememberMe, setRememberMe] = useState(false);
+  const [loginSuccess, setLoginSuccess] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
   const [emailFocused, setEmailFocused] = useState(false);
   const [passwordFocused, setPasswordFocused] = useState(false);
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log('Form submitted:', { email, password, rememberMe });
+    try {
+      const response = await axios.post('http://localhost:3000/login', {
+        email,
+        password,
+        rememberMe,
+      });
+      console.log('Login successful:', response.data);
+      setLoginSuccess(true);
+      setEmail('');
+      setPassword('');
+      setErrorMessage('');
+    } catch (error) {
+      console.error('Login failed:', error.response ? error.response.data : error.message);
+      setErrorMessage('Login failed. Please try again.');
+      setLoginSuccess(false);
+    }
   };
 
   const styles = {
@@ -92,9 +112,6 @@ const LoginForm = () => {
       color: '#efefef',
       textDecoration: 'none',
     },
-    linkHover: {
-      textDecoration: 'underline',
-    },
     button: {
       background: '#fff',
       color: '#000',
@@ -107,10 +124,13 @@ const LoginForm = () => {
       border: '2px solid transparent',
       transition: '0.3s ease',
     },
-    buttonHover: {
-      color: '#fff',
-      borderColor: '#fff',
-      background: 'rgba(255, 255, 255, 0.15)',
+    successMessage: {
+      color: 'green',
+      marginTop: '10px',
+    },
+    errorMessage: {
+      color: 'red',
+      marginTop: '10px',
     },
     '@media (max-width: 600px)': {
       heading: {
@@ -133,7 +153,7 @@ const LoginForm = () => {
     },
   };
 
-  React.useEffect(() => {
+  useEffect(() => {
     const styleSheet = document.createElement('style');
     styleSheet.type = 'text/css';
     styleSheet.innerText = `
@@ -163,7 +183,12 @@ const LoginForm = () => {
       <div style={styles.wrapper}>
         <form style={styles.form} onSubmit={handleSubmit}>
           <h2 style={styles.heading}>Login</h2>
-          <div style={styles.inputField}>
+          <div
+            style={{
+              ...styles.inputField,
+              ...(emailFocused || email ? { borderBottomColor: '#fff' } : {}),
+            }}
+          >
             <input
               type="text"
               id="email"
@@ -174,16 +199,22 @@ const LoginForm = () => {
               required
               style={styles.input}
             />
-            <label 
-              htmlFor="email" 
-              style={{ 
-                ...styles.inputLabel, 
-                ...(email || emailFocused ? styles.inputFocus : {}) 
-              }}>
+            <label
+              htmlFor="email"
+              style={{
+                ...styles.inputLabel,
+                ...(emailFocused || email ? styles.inputFocus : {}),
+              }}
+            >
               Enter your email
             </label>
           </div>
-          <div style={styles.inputField}>
+          <div
+            style={{
+              ...styles.inputField,
+              ...(passwordFocused || password ? { borderBottomColor: '#fff' } : {}),
+            }}
+          >
             <input
               type="password"
               id="pass"
@@ -194,12 +225,13 @@ const LoginForm = () => {
               required
               style={styles.input}
             />
-            <label 
-              htmlFor="pass" 
-              style={{ 
-                ...styles.inputLabel, 
-                ...(password || passwordFocused ? styles.inputFocus : {}) 
-              }}>
+            <label
+              htmlFor="pass"
+              style={{
+                ...styles.inputLabel,
+                ...(passwordFocused || password ? styles.inputFocus : {}),
+              }}
+            >
               Enter your password
             </label>
           </div>
@@ -213,9 +245,18 @@ const LoginForm = () => {
               />
               <span>Remember me</span>
             </label>
-            <a href="/" style={styles.link}>Forgot password?</a>
+            <Link to="/" style={styles.link}>Forgot password?</Link>
           </div>
-          <button type="submit" style={styles.button}>Log In</button>
+          <button
+            type="submit"
+            style={styles.button}
+            onMouseEnter={(e) => (e.target.style = { ...styles.button, ...styles.buttonHover })}
+            onMouseLeave={(e) => (e.target.style = styles.button)}
+          >
+            Log In
+          </button>
+          {loginSuccess && <div style={styles.successMessage}>Login successful!</div>}
+          {errorMessage && <div style={styles.errorMessage}>{errorMessage}</div>}
         </form>
       </div>
     </div>
