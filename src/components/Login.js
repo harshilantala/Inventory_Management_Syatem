@@ -4,6 +4,8 @@ const LoginForm = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [rememberMe, setRememberMe] = useState(false);
+  const [emailFocused, setEmailFocused] = useState(false);
+  const [passwordFocused, setPasswordFocused] = useState(false);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -17,14 +19,14 @@ const LoginForm = () => {
       justifyContent: 'center',
       minHeight: '100vh',
       width: '100%',
-      margin: 0, // Ensure no default margin
-      padding: 0, // Ensure no default padding
+      margin: 0,
+      padding: 0,
       position: 'relative',
       background: 'url("/images/background1.jpg") no-repeat center center',
-      backgroundSize: 'cover', // Ensures the image covers the whole screen
-      backgroundAttachment: 'fixed', // Keeps the background image fixed when scrolling
+      backgroundSize: 'cover',
+      backgroundAttachment: 'fixed',
       color: '#fff',
-      overflow: 'hidden', // Hide scrollbars
+      overflow: 'hidden',
     },
     wrapper: {
       width: '100%',
@@ -131,7 +133,6 @@ const LoginForm = () => {
     },
   };
 
-  // Apply hidden scrollbars via additional stylesheet injected into the document head
   React.useEffect(() => {
     const styleSheet = document.createElement('style');
     styleSheet.type = 'text/css';
@@ -168,10 +169,19 @@ const LoginForm = () => {
               id="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
+              onFocus={() => setEmailFocused(true)}
+              onBlur={() => setEmailFocused(false)}
               required
               style={styles.input}
             />
-            <label htmlFor="email" style={styles.inputLabel}>Enter your email</label>
+            <label 
+              htmlFor="email" 
+              style={{ 
+                ...styles.inputLabel, 
+                ...(email || emailFocused ? styles.inputFocus : {}) 
+              }}>
+              Enter your email
+            </label>
           </div>
           <div style={styles.inputField}>
             <input
@@ -179,10 +189,19 @@ const LoginForm = () => {
               id="pass"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
+              onFocus={() => setPasswordFocused(true)}
+              onBlur={() => setPasswordFocused(false)}
               required
               style={styles.input}
             />
-            <label htmlFor="pass" style={styles.inputLabel}>Enter your password</label>
+            <label 
+              htmlFor="pass" 
+              style={{ 
+                ...styles.inputLabel, 
+                ...(password || passwordFocused ? styles.inputFocus : {}) 
+              }}>
+              Enter your password
+            </label>
           </div>
           <div style={styles.forget}>
             <label htmlFor="remember" style={styles.rememberCheckbox}>
