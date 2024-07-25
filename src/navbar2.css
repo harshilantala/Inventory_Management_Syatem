@@ -1,0 +1,79 @@
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0px 20px;
+    background-color: #FEFFFE;
+    border-bottom: 1px solid #ddd;
+  }
+  
+  .branding-container {
+    display: flex;
+    align-items: center;
+    cursor: pointer; /* Make the branding container clickable */
+  }
+  
+  .logo {
+    height: 60px;
+    width: 60px;
+    cursor: pointer; /* Make the logo clickable */
+  }
+  
+  .branding {
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-left: 0.5rem; /* Add some space between the logo and the text */
+    cursor: pointer; /* Make the brand name clickable */
+  }
+
+  
+  .branding-container {
+    display: flex;
+    align-items: center;
+  }
+  
+  .branding {
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-left: 0.5rem;
+    color: #040C0F;
+  }
+  
+  .nav-links {
+    display: flex;
+    align-items: center;
+  }
+  
+  .nav-button {
+    padding: 10px 15px;
+    font-size: 15px;
+    cursor: pointer;
+    border-radius: 5px;
+    margin-left: 10px;
+    background-color: #040C0F;
+    color: #FEFFFE;
+    font-weight: 600;
+    border: none;
+    transition: background-color 0.3s ease;
+  }
+  
+  .nav-button:hover {
+    background-color: #4E5559;
+  }
+  
+  .user-container {
+    display: flex;
+    align-items: center;
+  }
+  
+  .user-logo {
+    height: 40px;
+    width: 40px;
+    border-radius: 50%;
+  }
+  
+  .logo {
+    height: 60px;
+    width: 60px;
+  }
+  
