@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import axios from 'axios';
 import '../css/purchase.css';
 
 const Purchase = () => {
@@ -8,6 +9,7 @@ const Purchase = () => {
     paymentMethod: 'cash',
     amount: '',
     itemName: '',
+    quantity: '', // Added quantity to state
     dateOfPurchase: ''
   });
 
@@ -40,8 +42,6 @@ const Purchase = () => {
   
     return formattedNumber;
   };
-  
-  
 
   const handleAmountChange = (e) => {
     const { value } = e.target;
@@ -52,10 +52,18 @@ const Purchase = () => {
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Handle form submission
-    console.log('Form data:', formData);
+    try {
+      // Remove commas from amount before sending to backend
+      const amount = formData.amount.replace(/,/g, '');
+      const response = await axios.post('http://localhost:3000/vendors', { ...formData, amount });
+      console.log('Form data submitted:', response.data);
+      // Handle success (e.g., show a success message or reset the form)
+    } catch (error) {
+      console.error('Error submitting form:', error);
+      // Handle error (e.g., show an error message)
+    }
   };
 
   return (
@@ -144,24 +152,5 @@ const Purchase = () => {
     </div>
   );
 };
-
-// const formatAmount = (value) => {
-//   // Remove any non-numeric characters
-//   const num = value.replace(/[^\d]/g, '');
-
-//   // Handle empty input
-//   if (!num) return '';
-
-//   // Split the number into parts
-//   const lastThree = num.slice(-3);
-//   const otherParts = num.slice(0, -3);
-  
-//   // Add commas for lakhs and crores
-//   const formattedNumber = otherParts
-//     .replace(/\B(?=(\d{2})+(?!\d))/g, ",")
-//     .concat("," + lastThree);
-
-//   return formattedNumber;
-// };
 
 export default Purchase;
