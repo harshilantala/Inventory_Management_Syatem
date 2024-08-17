@@ -1,30 +1,55 @@
-/* eslint-disable no-undef */
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import axios from 'axios';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import '../css/login.css';
 
 const LoginForm = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
+  const [businessName, setBusinessName] = useState('');
+  const [image, setImage] = useState(null);
   const [rememberMe, setRememberMe] = useState(false);
   const [loginSuccess, setLoginSuccess] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
-  const [emailFocused, setEmailFocused] = useState(false);
-  const [passwordFocused, setPasswordFocused] = useState(false);
+  const [focusedField, setFocusedField] = useState({});
+  const [preview, setPreview] = useState(null);
+
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await axios.post('http://localhost:3000/login', {
-        email,
-        password,
-        rememberMe,
+      const formData = new FormData();
+      formData.append('email', email);
+      formData.append('password', password);
+      formData.append('firstName', firstName);
+      formData.append('lastName', lastName);
+      formData.append('businessName', businessName);
+      if (image) formData.append('image', image);
+      formData.append('rememberMe', rememberMe);
+
+      const response = await axios.post('http://localhost:3000/login', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
       });
       console.log('Login successful:', response.data);
       setLoginSuccess(true);
       setEmail('');
       setPassword('');
+      setFirstName('');
+      setLastName('');
+      setBusinessName('');
+      setImage(null);
+      setPreview(null);
       setErrorMessage('');
+      localStorage.setItem('user', JSON.stringify({
+        email,
+        rememberMe,
+      }));
+      navigate('/purchase');
     } catch (error) {
       console.error('Login failed:', error.response ? error.response.data : error.message);
       setErrorMessage('Login failed. Please try again.');
@@ -32,211 +57,146 @@ const LoginForm = () => {
     }
   };
 
-  const styles = {
-    body: {
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-      minHeight: '100vh',
-      width: '100%',
-      margin: 0,
-      padding: 0,
-      position: 'relative',
-      background: 'url("/images/background1.jpg") no-repeat center center',
-      backgroundSize: 'cover',
-      backgroundAttachment: 'fixed',
-      color: '#fff',
-      overflow: 'hidden',
-    },
-    wrapper: {
-      width: '100%',
-      maxWidth: '400px',
-      borderRadius: '8px',
-      padding: '30px',
-      textAlign: 'center',
-      border: '1px solid rgba(255, 255, 255, 0.5)',
-      backdropFilter: 'blur(9px)',
-      WebkitBackdropFilter: 'blur(9px)',
-      background: 'rgba(0, 0, 0, 0.5)',
-      margin: 'auto',
-      boxSizing: 'border-box',
-    },
-    form: {
-      display: 'flex',
-      flexDirection: 'column',
-    },
-    heading: {
-      fontSize: '2rem',
-      marginBottom: '20px',
-    },
-    inputField: {
-      position: 'relative',
-      borderBottom: '2px solid #ccc',
-      margin: '15px 0',
-    },
-    inputLabel: {
-      position: 'absolute',
-      top: '50%',
-      left: '0',
-      transform: 'translateY(-50%)',
-      color: '#fff',
-      fontSize: '16px',
-      pointerEvents: 'none',
-      transition: '0.15s ease',
-    },
-    input: {
-      width: '100%',
-      height: '40px',
-      background: 'transparent',
-      border: 'none',
-      outline: 'none',
-      fontSize: '16px',
-      color: '#fff',
-    },
-    inputFocus: {
-      fontSize: '0.8rem',
-      top: '10px',
-      transform: 'translateY(-120%)',
-    },
-    forget: {
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'space-between',
-      margin: '25px 0 35px 0',
-      color: '#fff',
-    },
-    rememberCheckbox: {
-      accentColor: '#fff',
-    },
-    link: {
-      color: '#efefef',
-      textDecoration: 'none',
-    },
-    button: {
-      background: '#fff',
-      color: '#000',
-      fontWeight: '600',
-      border: 'none',
-      padding: '12px 20px',
-      cursor: 'pointer',
-      borderRadius: '3px',
-      fontSize: '16px',
-      border: '2px solid transparent',
-      transition: '0.3s ease',
-    },
-    successMessage: {
-      color: 'green',
-      marginTop: '10px',
-    },
-    errorMessage: {
-      color: 'red',
-      marginTop: '10px',
-    },
-    '@media (max-width: 600px)': {
-      heading: {
-        fontSize: '1.5rem',
-      },
-      inputField: {
-        margin: '10px 0',
-      },
-      inputLabel: {
-        fontSize: '14px',
-      },
-      input: {
-        fontSize: '14px',
-        height: '35px',
-      },
-      button: {
-        padding: '10px 15px',
-        fontSize: '14px',
-      },
-    },
+  const handleFocus = (field) => {
+    setFocusedField((prevState) => ({ ...prevState, [field]: true }));
   };
 
-  useEffect(() => {
-    const styleSheet = document.createElement('style');
-    styleSheet.type = 'text/css';
-    styleSheet.innerText = `
-      /* Hide scrollbars for WebKit browsers */
-      body::-webkit-scrollbar {
-        display: none;
-      }
+  const handleBlur = (field) => {
+    setFocusedField((prevState) => ({ ...prevState, [field]: false }));
+  };
 
-      /* Hide scrollbars for Firefox */
-      body {
-        scrollbar-width: none;
-      }
-
-      /* Hide scrollbars for IE and Edge */
-      body {
-        -ms-overflow-style: none;
-      }
-    `;
-    document.head.appendChild(styleSheet);
-    return () => {
-      document.head.removeChild(styleSheet);
-    };
-  }, []);
+  const handleImageChange = (e) => {
+    const file = e.target.files[0];
+    setImage(file);
+    if (file) {
+      setPreview(URL.createObjectURL(file));
+    }
+  };
 
   return (
-    <div style={styles.body}>
-      <div style={styles.wrapper}>
-        <form style={styles.form} onSubmit={handleSubmit}>
-          <h2 style={styles.heading}>Login</h2>
-          <div
-            style={{
-              ...styles.inputField,
-              ...(emailFocused || email ? { borderBottomColor: '#fff' } : {}),
-            }}
-          >
+    <div className="login-body">
+      <div className="login-wrapper">
+        <form className="login-form" onSubmit={handleSubmit}>
+          <h2 className="login-heading">Login</h2>
+          <div className="file-upload">
+            <label htmlFor="image" className="upload-btn">
+              {preview ? (
+                <img src={preview} alt="Profile Preview" className="profile-preview" />
+              ) : (
+                <i className="fas fa-user upload-icon"></i>
+              )}
+            </label>
             <input
-              type="text"
+              type="file"
+              id="image"
+              onChange={handleImageChange}
+              className="file-input"
+            />
+          </div>
+          <div className="login-nameFields">
+            <div
+              className={`login-inputField ${focusedField['firstName'] || firstName ? 'login-inputFocus' : ''}`}
+            >
+              <input
+                type="text"
+                id="firstName"
+                value={firstName}
+                onChange={(e) => setFirstName(e.target.value)}
+                onFocus={() => handleFocus('firstName')}
+                onBlur={() => handleBlur('firstName')}
+                required
+                className="login-input"
+              />
+              <label
+                htmlFor="firstName"
+                className={`login-inputLabel ${focusedField['firstName'] || firstName ? 'login-inputFocus' : ''}`}
+              >
+                First Name
+              </label>
+            </div>
+            <div
+              className={`login-inputField ${focusedField['lastName'] || lastName ? 'login-inputFocus' : ''}`}
+            >
+              <input
+                type="text"
+                id="lastName"
+                value={lastName}
+                onChange={(e) => setLastName(e.target.value)}
+                onFocus={() => handleFocus('lastName')}
+                onBlur={() => handleBlur('lastName')}
+                required
+                className="login-input"
+              />
+              <label
+                htmlFor="lastName"
+                className={`login-inputLabel ${focusedField['lastName'] || lastName ? 'login-inputFocus' : ''}`}
+              >
+                Last Name
+              </label>
+            </div>
+          </div>
+          <div className="logo-businessName">
+            <div className="businessName">
+              <div
+                className={`login-inputField ${focusedField['businessName'] || businessName ? 'login-inputFocus' : ''}`}
+              >
+                <input
+                  type="text"
+                  id="businessName"
+                  value={businessName}
+                  onChange={(e) => setBusinessName(e.target.value)}
+                  onFocus={() => handleFocus('businessName')}
+                  onBlur={() => handleBlur('businessName')}
+                  required
+                  className="login-input"
+                />
+                <label
+                  htmlFor="businessName"
+                  className={`login-inputLabel ${focusedField['businessName'] || businessName ? 'login-inputFocus' : ''}`}
+                >
+                  Business Name
+                </label>
+              </div>
+            </div>
+          </div>
+          <div className="login-inputField">
+            <input
+              type="email"
               id="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              onFocus={() => setEmailFocused(true)}
-              onBlur={() => setEmailFocused(false)}
+              onFocus={() => handleFocus('email')}
+              onBlur={() => handleBlur('email')}
               required
-              style={styles.input}
+              className="login-input"
             />
             <label
               htmlFor="email"
-              style={{
-                ...styles.inputLabel,
-                ...(emailFocused || email ? styles.inputFocus : {}),
-              }}
+              className={`login-inputLabel ${focusedField['email'] || email ? 'login-inputFocus' : ''}`}
             >
-              Enter your email
+              Email
             </label>
           </div>
-          <div
-            style={{
-              ...styles.inputField,
-              ...(passwordFocused || password ? { borderBottomColor: '#fff' } : {}),
-            }}
-          >
+          <div className="login-inputField">
             <input
               type="password"
-              id="pass"
+              id="password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              onFocus={() => setPasswordFocused(true)}
-              onBlur={() => setPasswordFocused(false)}
+              onFocus={() => handleFocus('password')}
+              onBlur={() => handleBlur('password')}
               required
-              style={styles.input}
+              className="login-input"
             />
             <label
-              htmlFor="pass"
-              style={{
-                ...styles.inputLabel,
-                ...(passwordFocused || password ? styles.inputFocus : {}),
-              }}
+              htmlFor="password"
+              className={`login-inputLabel ${focusedField['password'] || password ? 'login-inputFocus' : ''}`}
             >
-              Enter your password
+              Password
             </label>
           </div>
-          <div style={styles.forget}>
-            <label htmlFor="remember" style={styles.rememberCheckbox}>
+          <div className="login-forget">
+            <label htmlFor="remember" className="login-rememberCheckbox">
               <input
                 type="checkbox"
                 id="remember"
@@ -245,18 +205,16 @@ const LoginForm = () => {
               />
               <span>Remember me</span>
             </label>
-            <Link to="/" style={styles.link}>Forgot password?</Link>
+            <Link to="/" className="login-link">Forgot password?</Link>
           </div>
           <button
             type="submit"
-            style={styles.button}
-            onMouseEnter={(e) => (e.target.style = { ...styles.button, ...styles.buttonHover })}
-            onMouseLeave={(e) => (e.target.style = styles.button)}
+            className="login-button"
           >
             Log In
           </button>
-          {loginSuccess && <div style={styles.successMessage}>Login successful!</div>}
-          {errorMessage && <div style={styles.errorMessage}>{errorMessage}</div>}
+          {loginSuccess && <div className="successMessage">Login successful!</div>}
+          {errorMessage && <div className="errorMessage">{errorMessage}</div>}
         </form>
       </div>
     </div>
