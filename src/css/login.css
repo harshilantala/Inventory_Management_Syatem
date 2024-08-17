@@ -1,0 +1,209 @@
+/* login.css */
+
+/* Body styles */
+.login-body {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  position: relative;
+  background: url("/public/images/background3.png") no-repeat center center;
+  background-size: cover;
+  background-attachment: fixed;
+  color: #fff;
+  overflow: hidden;
+}
+
+/* Wrapper styles */
+.login-wrapper {
+  width: 100%;
+  max-width: 700px; /* Increased width for better layout */
+  border-radius: 8px;
+  padding: 30px;
+  text-align: center;
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  backdrop-filter: blur(9px);
+  -webkit-backdrop-filter: blur(9px);
+  background: rgba(0, 0, 0, 0.5);
+  margin: auto;
+  box-sizing: border-box;
+}
+
+/* Form styles */
+.login-form {
+  display: flex;
+  flex-direction: column;
+}
+
+.login-heading {
+  font-size: 2rem;
+  margin-bottom: 20px;
+}
+
+.login-nameFields {
+  display: flex;
+  justify-content: space-between;
+  gap: 15px; /* Space between the two fields */
+}
+
+.login-inputField {
+  position: relative;
+  border-bottom: 2px solid #ccc;
+  margin: 15px 0;
+  flex: 1; /* Take up equal space */
+}
+
+/* Circle button styles for profile image upload */
+.file-upload {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  /* border-bottom: 2px solid #ccc; */
+  margin: 15px 0;
+}
+
+.upload-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100px; /* Diameter of the circle */
+  height: 100px; /* Diameter of the circle */
+  border-radius: 50%; /* Make it circular */
+  border: 2px solid #ccc;
+  background-color: #fff;
+  overflow: hidden;
+  cursor: pointer;
+  font-size: 2rem; /* Adjust size of the icon */
+}
+
+.upload-btn img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+}
+
+.upload-icon {
+  color: #000; /* Color of the icon */
+}
+
+/* Hidden file input */
+.file-input {
+  display: none;
+}
+
+.file-upload .login-inputFocus {
+  font-size: 0.75rem;
+  top: -10px;
+  transform: translateY(0);
+}
+
+
+.login-inputLabel {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  transform: translateY(-50%);
+  color: #fff;
+  font-size: 16px;
+  pointer-events: none;
+  transition: 0.15s ease;
+}
+
+.login-input {
+  width: 100%;
+  height: 40px;
+  background: transparent;
+  border: none;
+  outline: none;
+  font-size: 16px;
+  color: #fff;
+}
+
+
+.login-inputFocus {
+  font-size: 0.75rem; 
+  top: -10px; 
+  left: 0; 
+  transform: translateY(0); 
+  color: #fff; 
+}
+
+.login-forget {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 25px 0 35px 0;
+  color: #fff;
+}
+
+.login-rememberCheckbox {
+  accent-color: #fff;
+}
+
+.login-link {
+  color: #efefef;
+  text-decoration: none;
+}
+
+.login-link:hover {
+  text-decoration: underline;
+}
+
+.login-button {
+  background: #fff;
+  color: #000;
+  font-weight: 600;
+  border: none;
+  padding: 12px 20px;
+  cursor: pointer;
+  border-radius: 3px;
+  font-size: 16px;
+  border: 2px solid transparent;
+  transition: 0.3s ease;
+}
+
+.login-button:hover {
+  color: #fff;
+  border-color: #fff;
+  background: rgba(255, 255, 255, 0.15);
+}
+
+@media (max-width: 600px) {
+  .login-heading {
+    font-size: 1.5rem;
+  }
+  .login-inputField {
+    margin: 10px 0;
+  }
+  .login-inputLabel {
+    font-size: 14px;
+  }
+  .login-input {
+    font-size: 14px;
+    height: 35px;
+  }
+  .login-button {
+    padding: 10px 15px;
+    font-size: 14px;
+  }
+}
+
+/* Hide scrollbars for WebKit browsers */
+body::-webkit-scrollbar {
+  display: none;
+}
+
+/* Hide scrollbars for Firefox */
+body {
+  scrollbar-width: none;
+}
+
+/* Hide scrollbars for IE and Edge */
+body {
+  -ms-overflow-style: none;
+}
