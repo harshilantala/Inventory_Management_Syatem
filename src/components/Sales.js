@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import axios from 'axios';
 import '../css/sales.css';
 
 const Sales = () => {
@@ -29,10 +30,37 @@ const Sales = () => {
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Handle form submission
-    console.log('Form data:', formData);
+    try {
+      
+      const rawAmount = formData.amount.replace(/[^\d.-]/g, '');
+      const dataToSend = {
+        Customer_Name: formData.customerName,
+        Customer_Email: formData.customerEmail,
+        Payment_Method: formData.paymentMethod,
+        Item_Name: formData.itemName,
+        Quantity: formData.quantity,
+        Amount: rawAmount, 
+        Date: formData.date
+      };
+
+      const response = await axios.post('http://localhost:3000/sale', dataToSend);
+      console.log('Response from server:', response.data);
+
+      setFormData({
+        customerName: '',
+        customerEmail: '',
+        itemName: '',
+        quantity: '',
+        date: '',
+        amount: '',
+        paymentMethod: 'cash'
+      });
+    } catch (error) {
+      console.error('Error submitting form:', error);
+    
+    }
   };
 
   return (
@@ -110,8 +138,6 @@ const Sales = () => {
             required
           />
         </label>
-        
-        
         <button type="submit" className="submit-button">Submit</button>
       </form>
     </div>
@@ -119,20 +145,18 @@ const Sales = () => {
 };
 
 const formatAmount = (value) => {
-  // Remove any non-numeric characters
-  const num = value.replace(/[^\d]/g, '');
 
-  // Handle empty input
+  const num = value.replace(/[^\d.-]/g, '');
+
   if (!num) return '';
 
-  // If the number is less than 1000, return it as is
+ 
   if (num.length < 4) return num;
 
-  // Split the number into parts
   const lastThree = num.slice(-3);
   const otherParts = num.slice(0, -3);
   
-  // Add commas for lakhs and crores
+
   const formattedNumber = otherParts
     .replace(/\B(?=(\d{2})+(?!\d))/g, ",")
     .concat("," + lastThree);
