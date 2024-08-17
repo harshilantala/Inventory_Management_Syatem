@@ -9,7 +9,7 @@ const Purchase = () => {
     paymentMethod: 'cash',
     amount: '',
     itemName: '',
-    quantity: '', // Added quantity to state
+    quantity: '', 
     dateOfPurchase: ''
   });
 
@@ -59,7 +59,16 @@ const Purchase = () => {
       const amount = formData.amount.replace(/,/g, '');
       const response = await axios.post('http://localhost:3000/vendors', { ...formData, amount });
       console.log('Form data submitted:', response.data);
-      // Handle success (e.g., show a success message or reset the form)
+      // Reset the form fields
+      setFormData({
+        vendorName: '',
+        vendorEmail: '',
+        paymentMethod: 'cash',
+        amount: '',
+        itemName: '',
+        quantity: '',
+        dateOfPurchase: ''
+      });
     } catch (error) {
       console.error('Error submitting form:', error);
       // Handle error (e.g., show an error message)
