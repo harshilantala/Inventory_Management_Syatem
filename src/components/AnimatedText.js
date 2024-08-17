@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import './AnimatedText.css';
+import '../css/AnimatedText.css';
 
 const AnimatedTextComponent = () => {
   const texts = [
