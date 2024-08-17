@@ -7,7 +7,7 @@ const Navbar = () => {
   const navigate = useNavigate();
 
   const handleLoginClick = () => {
-    navigate('login');
+    navigate('register');
   }
 
   return (
@@ -16,7 +16,7 @@ const Navbar = () => {
         <img src="/images/diamond1.jpg" alt="Logo" style={styles.logo} />
         <h1 style={styles.branding}>StoneStream</h1>
       </div>
-      <button style={styles.loginButton} onClick={handleLoginClick}>Login</button>
+      <button style={styles.loginButton} onClick={handleLoginClick}>Register</button>
     </div>
   );
 };
