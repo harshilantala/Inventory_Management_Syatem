@@ -19,24 +19,27 @@ const Home = () => {
 
 const styles = {
   container: {
-    backgroundImage: 'url(/images/background2.jpg)', // Ensure this path is correct
+    backgroundImage: 'url(/images/background2.jpg)', 
     backgroundSize: 'cover',
     backgroundPosition: 'center',
     minHeight: '100vh',
+    width: '100vw',
     display: 'flex',
     flexDirection: 'column',
+    position: 'relative', // Ensures that child elements like overlay are positioned correctly
   },
   overlay: {
     flex: 1,
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: 'rgba(0, 0, 0, 0.5)', // Semi-transparent overlay
+    backgroundColor: 'rgba(0, 0, 0, 0.5)', 
+    width: '100%', // Make sure the overlay covers the full width
   },
   content: {
-    color: 'white', // Text color
+    color: 'white', 
     padding: '20px',
-    textAlign: 'center', // Center the text
+    textAlign: 'center', 
   }
 };
 
