@@ -12,6 +12,8 @@ const Sales = () => {
     amount: '',
     paymentMethod: 'cash'
   });
+  const [error, setError] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -32,8 +34,17 @@ const Sales = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsSubmitting(true);
+    setError('');
+
+    // Validate that quantity is not negative
+    if (formData.quantity < 0) {
+      setError('Quantity cannot be negative');
+      setIsSubmitting(false);
+      return;
+    }
+
     try {
-      
       const rawAmount = formData.amount.replace(/[^\d.-]/g, '');
       const dataToSend = {
         Customer_Name: formData.customerName,
@@ -41,13 +52,14 @@ const Sales = () => {
         Payment_Method: formData.paymentMethod,
         Item_Name: formData.itemName,
         Quantity: formData.quantity,
-        Amount: rawAmount, 
+        Amount: rawAmount,
         Date: formData.date
       };
 
-      const response = await axios.post('http://localhost:3000/sale', dataToSend);
+      const response = await axios.post('http://localhost:3000/api/sales', dataToSend);
       console.log('Response from server:', response.data);
 
+      // Reset form after successful submission
       setFormData({
         customerName: '',
         customerEmail: '',
@@ -58,8 +70,10 @@ const Sales = () => {
         paymentMethod: 'cash'
       });
     } catch (error) {
-      console.error('Error submitting form:', error);
-    
+      console.error('Error submitting form:', error.response ? error.response.data : error.message);
+      setError('Error submitting data. Please try again.');
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -67,6 +81,7 @@ const Sales = () => {
     <div className="sales-container">
       <h2 className="sales-heading">New Sale</h2>
       <form className="sales-form" onSubmit={handleSubmit}>
+        {error && <p className="error-message">{error}</p>}
         <label>
           Customer Name:
           <input 
@@ -138,29 +153,23 @@ const Sales = () => {
             required
           />
         </label>
-        <button type="submit" className="submit-button">Submit</button>
+        <button type="submit" className="submit-button" disabled={isSubmitting}>
+          {isSubmitting ? 'Submitting...' : 'Submit'}
+        </button>
       </form>
     </div>
   );
 };
 
 const formatAmount = (value) => {
-
   const num = value.replace(/[^\d.-]/g, '');
-
   if (!num) return '';
-
- 
   if (num.length < 4) return num;
-
   const lastThree = num.slice(-3);
   const otherParts = num.slice(0, -3);
-  
-
   const formattedNumber = otherParts
     .replace(/\B(?=(\d{2})+(?!\d))/g, ",")
     .concat("," + lastThree);
-
   return formattedNumber;
 };
 
