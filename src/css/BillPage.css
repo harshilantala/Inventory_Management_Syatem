@@ -1,0 +1,29 @@
+.bill-page {
+  background-color: #f9f9f9;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  padding: 20px;
+  font-family: 'Helvetica', sans-serif;
+}
+
+.bill-details {
+  background-color: #fff;
+  padding: 15px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  margin-bottom: 15px;
+}
+
+.bill-details h4 {
+  margin-bottom: 10px;
+}
+
+.bill-details p {
+  margin: 5px 0;
+}
+
+.btn-primary {
+  background-color: #007bff;
+  border: none;
+  color: white;
+}

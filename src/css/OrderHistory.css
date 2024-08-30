@@ -1,0 +1,112 @@
+/* src/css/orderHistory.css */
+
+body {
+  font-family: 'Poppins', sans-serif;
+  background: linear-gradient(135deg, #f0f4f8, #d9e2ec);
+  color: #333;
+  margin: 0;
+  padding: 0;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.order-history {
+  background: rgba(255, 255, 255, 0.75);
+  backdrop-filter: blur(10px);
+  border-radius: 10px;
+  padding: 30px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease-in-out;
+}
+
+.order-history:hover {
+  transform: translateY(-5px);
+}
+
+.table {
+  margin-bottom: 30px;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.table-striped tbody tr:nth-of-type(odd) {
+  background-color: #e9ecef;
+}
+
+.table-bordered th, .table-bordered td {
+  border: 1px solid #dee2e6;
+  padding: 15px;
+}
+
+.thead-dark th {
+  background: linear-gradient(135deg, #6a89cc, #4a69bd);
+  color: #fff;
+}
+
+.btn {
+  background-color: #4a69bd;
+  color: #fff;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.btn:hover {
+  background-color: #1e3799;
+  transform: translateY(-2px);
+}
+
+.date-picker-container {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+  margin-bottom: 30px;
+}
+
+.date-picker-container .form-control {
+  width: 220px;
+  padding: 10px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  transition: border-color 0.3s ease;
+}
+
+.date-picker-container .form-control:focus {
+  border-color: #4a69bd;
+  box-shadow: 0 0 8px rgba(74, 105, 189, 0.5);
+}
+
+.search-bar {
+  max-width: 600px;
+  margin: 0 auto 20px;
+  padding: 15px;
+  border-radius: 30px;
+  border: 1px solid #ccc;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.search-bar:focus {
+  border-color: #4a69bd;
+  box-shadow: 0 0 8px rgba(74, 105, 189, 0.5);
+}
+
+.text-primary {
+  color: #4a69bd;
+}
+
+.text-success {
+  color: #38ada9;
+}
+
+@media (max-width: 768px) {
+  .table {
+    font-size: 14px;
+  }
+}
