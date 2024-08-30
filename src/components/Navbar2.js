@@ -34,7 +34,7 @@ const Navbar2 = () => {
         <button className="nav-button" onClick={() => handleNavigation('/purchase')}>Purchase</button>
         <button className="nav-button" onClick={() => handleNavigation('/sale')}>Sale</button>
         <button className="nav-button" onClick={() => handleNavigation('/dashboard')}>Dashboard</button>
-        <button className="nav-button" onClick={() => handleNavigation('/order-history')}>Order History</button>
+        <button className="nav-button" onClick={() => handleNavigation('/history')}>Order History</button>
         <button className="nav-button" onClick={() => handleNavigation('/invoice')}>Invoice</button>
       </div>
       <div className="user-container">
