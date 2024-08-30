@@ -9,9 +9,12 @@ const Purchase = () => {
     paymentMethod: 'cash',
     amount: '',
     itemName: '',
-    quantity: '', 
+    quantity: '',
     dateOfPurchase: ''
   });
+
+  const [error, setError] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -22,24 +25,17 @@ const Purchase = () => {
   };
 
   const formatAmount = (value) => {
-    // Remove any non-numeric characters
     const num = value.replace(/[^\d]/g, '');
-  
-    // Handle empty input
     if (!num) return '';
-  
-    // If the number is less than 1000, return it as is
     if (num.length < 4) return num;
-  
-    // Split the number into parts
+
     const lastThree = num.slice(-3);
     const otherParts = num.slice(0, -3);
-    
-    // Add commas for lakhs and crores
+
     const formattedNumber = otherParts
       .replace(/\B(?=(\d{2})+(?!\d))/g, ",")
       .concat("," + lastThree);
-  
+
     return formattedNumber;
   };
 
@@ -54,11 +50,39 @@ const Purchase = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsSubmitting(true);
+    setError('');
+
     try {
-      // Remove commas from amount before sending to backend
       const amount = formData.amount.replace(/,/g, '');
-      const response = await axios.post('http://localhost:3000/vendors', { ...formData, amount });
-      console.log('Form data submitted:', response.data);
+
+      // Send data to Vendor collection
+      const vendorResponse = await axios.post('http://localhost:3000/api/vendors', {
+        vendorName: formData.vendorName,
+        vendorEmail: formData.vendorEmail,
+        paymentMethod: formData.paymentMethod,
+        amount,
+        itemName: formData.itemName,
+        quantity: formData.quantity,
+        dateOfPurchase: formData.dateOfPurchase
+      });
+
+      console.log('Vendor data submitted:', vendorResponse.data);
+
+      // Send data to ItemPurchase collection
+      const itemPurchaseData = {
+        itemName: formData.itemName,
+        quantity: formData.quantity,
+        vendorName: formData.vendorName,
+        vendorEmail: formData.vendorEmail,
+        paymentMethod: formData.paymentMethod,
+        amount,
+        dateOfPurchase: formData.dateOfPurchase
+      };
+      const itemPurchaseResponse = await axios.post('http://localhost:3000/api/itempurchases', itemPurchaseData);
+
+      console.log('ItemPurchase data submitted:', itemPurchaseResponse.data);
+
       // Reset the form fields
       setFormData({
         vendorName: '',
@@ -71,13 +95,16 @@ const Purchase = () => {
       });
     } catch (error) {
       console.error('Error submitting form:', error);
-      // Handle error (e.g., show an error message)
+      setError('Error submitting data. Please try again.');
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
   return (
     <div className="purchase-container">
       <h2 className="purchase-heading">New Purchase</h2>
+      {error && <p className="error-message">{error}</p>}
       <form className="purchase-form" onSubmit={handleSubmit}>
         <label>
           Vendor Name:
@@ -156,7 +183,9 @@ const Purchase = () => {
             required
           />
         </label>
-        <button type="submit" className="submit-button">Submit</button>
+        <button type="submit" className="submit-button" disabled={isSubmitting}>
+          {isSubmitting ? 'Submitting...' : 'Submit'}
+        </button>
       </form>
     </div>
   );
