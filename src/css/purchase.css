@@ -1,0 +1,61 @@
+/* purchase.css */
+
+.purchase-container {
+  background-color: #FEFFFE;
+  padding: 20px;
+  margin: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  max-width: 500px;
+  margin: auto;
+  font-family: "Lexend", "Lexend Placeholder", sans-serif;
+  
+}
+
+.purchase-heading {
+  color: #040C0F;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.purchase-form label {
+  display: block;
+  margin-bottom: 15px;
+  color: #4E5559;
+  font-weight: bold;
+}
+
+.purchase-form input,
+.purchase-form select {
+  width: 100%;
+  padding: 10px;
+  margin-top: 5px;
+  border: 1px solid #585C5E;
+  border-radius: 5px;
+  box-sizing: border-box;
+  background-color: #FEFFFE;
+  color: #040C0F;
+}
+
+.purchase-form input:focus,
+.purchase-form select:focus {
+  outline: none;
+  border-color: #040C0F;
+}
+
+.submit-button {
+  background-color: #040C0F;
+  color: #FEFFFE;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  margin-top: 20px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.submit-button:hover {
+  background-color: #4E5559;
+}

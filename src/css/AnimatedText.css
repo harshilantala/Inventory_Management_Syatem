@@ -1,0 +1,10 @@
+.typewriter {
+    font-size: 2rem;
+    font-weight: bold;
+    color: #ffffff;
+    text-align: center;
+    border-right: 0.1em solid #333;
+    white-space: nowrap;
+    overflow: hidden;
+  }
+  
